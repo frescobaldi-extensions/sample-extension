@@ -12,7 +12,7 @@ same time as a demonstration and documentation as well as a tool for developing 
 extensions infrastructure in Frescobaldi. Extensions are *not* officially supported in
 Frescobaldi yet, in order to try out this sample extension one has to run Frescobaldi
 from Git (see this
-[Wiki page](https://github.com/wbsoft/frescobaldi/wiki/Run-Frescobaldi-3-on-Linux),
+[Wiki page](https://github.com/wbsoft/frescobaldi/wiki/Run-Frescobaldi-3-on-Linux)),
 specifically from the `dev/urs/extensions` branch. Eventually it will be merged to
 the master branch and be released in version 3.1.
 
