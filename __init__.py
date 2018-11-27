@@ -35,6 +35,8 @@
 # the current document, cursor, etc.) are directly made available as
 # properties of the extension.
 
+from PyQt5.QtCore import Qt
+
 # This is the mandatory import from Frescobaldi, making the extension
 # API available.
 import extensions
@@ -42,7 +44,7 @@ import extensions
 # An action collection is imported from a separate module in the pacakge.
 # It is mandatory that the actions class is defined before the
 # Extension itself (which could be within this file, though).
-from . import actions
+from . import actions, widget
 
 class Extension(extensions.Extension):
     """Entry point for an extension.
@@ -69,31 +71,35 @@ class Extension(extensions.Extension):
     def __init__(self, global_extensions):
         """Initialize the extension object. global_extensions
         will be referenced through self.parent()."""
+
+        # If the extension provides a Tool Panel it must be specified
+        # here (NOTE: *before* calling super()).
+        # All the functionality is implemented in the panel's *widget*,
+        # so passing the widget class is the main point of information,
+        # additionally the (initial) dock area for the panel is specified.
+        self.set_panel_properties(
+            widget.SampleWidget,
+            dock_area=Qt.LeftDockWidgetArea)
+
         super(Extension, self).__init__(global_extensions)
 
-        # The action collection is implicitly made available thanks
-        # to the class variable.
-        ac = self.action_collection()
+        # Everything up to this point is the necessary boilerplate code
+        # for defining an extension. The actual *work* of the extension
+        # is implemented in the action collection and the widget while
+        # the remainder of this file is used to coordinate everything,
+        # mostly by handling the actions.
 
-        # Custom functionality: connect actions with methods.
+        # The appropriate action collection is implicitly created
+        ac = self.action_collection()
+        # Connect the actions with handler methods
         ac.sample_action.triggered.connect(self.do_sample_action)
         ac.reverse_action.triggered.connect(self.do_reverse_action)
 
-        # Access the mainwindow and its actions. Here we respond to changes
-        # in the current document's selection status to activate/deactivate
-        # one actionself.
+        # Respond to changes in the current document. We update the
+        # status of (some of) our actions depending on whether there
+        # is a selection or not.
         self.mainwindow().selectionStateChanged.connect(
             self.update_selection_actions)
-
-    def create_panel(self):
-        """
-        Create a Tool Panel if desired.
-        If this method is overridden is must set self._panel to an instance
-        of an extensions.ExtensionPanel object. This will then be available
-        as a Tool panel through Tools=>Extensions=>extension-name."""
-        # The panel code is in panel.py
-        from . import panel
-        self._panel = panel.SamplePanel(self)
 
     # The following methods implement the custom sample implementation
     # of the extension. In case of very large extensions it may be good
