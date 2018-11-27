@@ -29,8 +29,9 @@ import extensions.widget
 
 class SampleWidget(extensions.widget.ExtensionWidget):
     """The panel's actual widget.
-    This may be any descendant of QWidget, but using extensions.ExtensionWidget
-    as a base class provides a few extra convenience properties.
+    This may be any descendant of QWidget, but using
+    extensions.widget.ExtensionWidget as a base class provides
+    a few extra convenience properties.
     """
     def __init__(self, panel):
         super(SampleWidget, self).__init__(panel)
