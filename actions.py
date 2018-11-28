@@ -31,6 +31,8 @@ from PyQt5.QtWidgets import QAction
 # Mandatory import
 import extensions.actions
 
+import icons
+
 class SampleActions(extensions.actions.ExtensionActionCollection):
     """An Extension module must have an 'Actions' class inherited from
     extensions.ExtensionActionCollection. This will be automatically
@@ -49,8 +51,9 @@ class SampleActions(extensions.actions.ExtensionActionCollection):
     def createActions(self, parent):
         """Create all actions that are available within this extension.
         Will be called automatically."""
-        #TODO: Load icons from the extension directory
         self.sample_action = QAction(parent)
+        # Icons can be loaded from the `icons` subdirectory in an extension
+        self.sample_action.setIcon(icons.get('lnr-heart'))
         self.reverse_action = QAction(parent)
 
     def translateUI(self):
