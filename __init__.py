@@ -44,7 +44,7 @@ import extensions
 # An action collection is imported from a separate module in the pacakge.
 # It is mandatory that the actions class is defined before the
 # Extension itself (which could be within this file, though).
-from . import actions, widget
+from . import actions, config, widget
 
 class Extension(extensions.Extension):
     """Entry point for an extension.
@@ -73,18 +73,23 @@ class Extension(extensions.Extension):
     _panel_widget_class = widget.SampleWidget
     _panel_dock_area = Qt.LeftDockWidgetArea
 
+    # Specify a class for a configuration widget (in the Preferences)
+    _config_widget_class = config.SampleConfig
+
 
     def __init__(self, global_extensions):
         """Initialize the extension object. global_extensions
-        will be referenced through self.parent()."""
+        will be referenced through self.parent()."
+
+        The __init__ method is not strictly necessary for an
+        extension. As is visible from this sample extension
+        it is only used to connect the actions to their handlers.
+        If an extension relies exclusively on the Tool panel
+        everything can be implemented there, and the Extension
+        class may be complete with setting the class variables.
+        """
 
         super(Extension, self).__init__(global_extensions)
-
-        # Everything up to this point is the necessary boilerplate code
-        # for defining an extension. The actual *work* of the extension
-        # is implemented in the action collection and the widget while
-        # the remainder of this file is used to coordinate everything,
-        # mostly by handling the actions.
 
         # The appropriate action collection is implicitly created
         ac = self.action_collection()
@@ -112,9 +117,16 @@ class Extension(extensions.Extension):
     def do_sample_action(self):
         """Standalone action showing a message box."""
         from PyQt5.QtWidgets import QMessageBox
-        QMessageBox.information(self.parent().mainwindow(), "Sample Action",
-            "This is a message box triggered by a sample action "
-            + "of '{}'.".format(self.display_name()), QMessageBox.Ok)
+        message = _("Sample Action")
+        s = extensions.ExtensionSettings()
+        informative_message = (
+            _("This is a message box triggered by a sample action "
+              "of the sample extension.\n\n"
+              "The FANCY option is {}checked.".format(
+              '' if s.value('sample/fancy', False, bool) else 'un')))
+        QMessageBox.information(
+            self.parent().mainwindow(), message,
+            informative_message, QMessageBox.Ok)
 
     def update_selection_actions(self, has_selection):
         """Called when the selection state of the current document changed.
