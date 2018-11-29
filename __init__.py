@@ -68,18 +68,15 @@ class Extension(extensions.Extension):
     # Details about this class are given in actions.py
     _action_collection_class = actions.SampleActions
 
+    # Specify a panel widget class to trigger the creation
+    # of a Tool panel. Providing the dock_area is optional.
+    _panel_widget_class = widget.SampleWidget
+    _panel_dock_area = Qt.LeftDockWidgetArea
+
+
     def __init__(self, global_extensions):
         """Initialize the extension object. global_extensions
         will be referenced through self.parent()."""
-
-        # If the extension provides a Tool Panel it must be specified
-        # here (NOTE: *before* calling super()).
-        # All the functionality is implemented in the panel's *widget*,
-        # so passing the widget class is the main point of information,
-        # additionally the (initial) dock area for the panel is specified.
-        self.set_panel_properties(
-            widget.SampleWidget,
-            dock_area=Qt.LeftDockWidgetArea)
 
         super(Extension, self).__init__(global_extensions)
 
