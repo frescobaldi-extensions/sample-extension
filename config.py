@@ -61,7 +61,7 @@ class SampleConfig(QWidget):
     def translateUI(self):
         self.check_box.setText(_("FANCY Preference"))
 
-    def loadSettings(self):
+    def load_settings(self):
         """Set the GUI elements to the state from the settings.
         A configuration widget must implement loadSettings() and
         saveSettings().
@@ -73,7 +73,7 @@ class SampleConfig(QWidget):
         s.beginGroup('sample')
         self.check_box.setChecked(s.value('fancy', False, bool))
 
-    def saveSettings(self):
+    def save_settings(self):
         s = ExtensionSettings()
         s.beginGroup('sample')
         s.setValue('fancy', self.check_box.isChecked())
