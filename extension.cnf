@@ -1,0 +1,19 @@
+#
+# Sample Frescobaldi Extension
+#
+
+extension-name: Sample Extension
+short-description: Sample Extension for Frescobaldi
+description: <
+  Heavily commented sample extension for Frescobaldi
+  serving as an introduction in the concepts of extension
+  development.
+  >
+api-version: 0.0.1
+maintainers: [
+  Urs Liska <git@ursliska.de>
+  ]
+version: 0.0.1
+license: GPL3
+website: https://github.com/frescobaldi-extensions/sample
+repository: https://github.com/frescobaldi-extensions/sample.git
