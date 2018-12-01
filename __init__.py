@@ -57,12 +57,7 @@ class Extension(extensions.Extension):
     arbitrary functionality. Providing a Tool Panel is optional.
     """
 
-    # Two class variables are required for proper operation:
-
-    # The display name is used as the title of the extension's
-    # Tools menu submenu entry, and for the list in the Preferences
-    # dialog.
-    _display_name = "Sample Extension"
+    # Configuration is mostly done with class variables:
 
     # Specify action collection class.
     # Details about this class are given in actions.py
