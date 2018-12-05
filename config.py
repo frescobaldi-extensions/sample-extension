@@ -23,10 +23,6 @@
 # The PyQt5 imports are for the actual widget, not for the integration
 from PyQt5.QtWidgets import QCheckBox, QLabel, QVBoxLayout, QWidget
 
-# A customized QSettings descendant has to be used to
-# handle preferences storage
-from extensions import ExtensionSettings
-
 class SampleConfig(QWidget):
     """The extension's configuration widget.
     This can be any QWidget descendant but must follow several rules.
@@ -63,17 +59,12 @@ class SampleConfig(QWidget):
 
     def load_settings(self):
         """Set the GUI elements to the state from the settings.
-        A configuration widget must implement loadSettings() and
-        saveSettings().
+        A configuration widget must implement load_settings() and
+        save_settings().
         """
-        # Instead of a QSettings() object an extensions.ExtensionSettings()
-        # object has to be used. An extension should handle its settings
-        # within a group namespace.
-        s = ExtensionSettings()
-        s.beginGroup('sample')
-        self.check_box.setChecked(s.value('fancy', False, bool))
+        # Instead of a QSettings() object extension settings
+        # are accessed through self.settings().get()
+        self.check_box.setChecked(self.settings().get('fancy'))
 
     def save_settings(self):
-        s = ExtensionSettings()
-        s.beginGroup('sample')
-        s.setValue('fancy', self.check_box.isChecked())
+        self.settings().set('fancy', self.check_box.isChecked())

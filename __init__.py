@@ -71,6 +71,9 @@ class Extension(extensions.Extension):
     # Specify a class for a configuration widget (in the Preferences)
     _config_widget_class = config.SampleConfig
 
+    # Specify extension's known settings with default values
+    _settings_config = { 'fancy': False }
+
 
     def __init__(self, global_extensions):
         """Initialize the extension object. global_extensions
@@ -113,12 +116,11 @@ class Extension(extensions.Extension):
         """Standalone action showing a message box."""
         from PyQt5.QtWidgets import QMessageBox
         message = _("Sample Action")
-        s = extensions.ExtensionSettings()
         informative_message = (
             _("This is a message box triggered by a sample action "
               "of the sample extension.\n\n"
               "The FANCY option is {}checked.".format(
-              '' if s.value('sample/fancy', False, bool) else 'un')))
+              '' if self.settings().get('fancy') else 'un')))
         QMessageBox.information(
             self.parent().mainwindow(), message,
             informative_message, QMessageBox.Ok)
