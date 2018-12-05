@@ -85,3 +85,6 @@ class SampleActions(extensions.actions.ExtensionActionCollection):
 
         # The context menu for the Music View will show the sample action
         self.set_menu_action_list('musicview', [self.sample_action])
+
+        # Show an action in the manuscript viewer's context menu
+        self.set_menu_action_list('manuscriptview', [self.sample_action])
