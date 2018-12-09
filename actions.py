@@ -54,6 +54,7 @@ class SampleActions(extensions.actions.ExtensionActionCollection):
         self.sample_action = QAction(parent)
         # Icons can be loaded from the `icons` subdirectory in an extension
         self.sample_action.setIcon(icons.get('lnr-heart'))
+        self._fancy_state = self.settings().get('fancy')
         self.reverse_action = QAction(parent)
 
     def translateUI(self):
@@ -88,3 +89,10 @@ class SampleActions(extensions.actions.ExtensionActionCollection):
 
         # Show an action in the manuscript viewer's context menu
         self.set_menu_action_list('manuscriptview', [self.sample_action])
+
+    # Custom functionality
+    def fancy_state(self):
+        return 'checked' if self._fancy_state else 'unchecked'
+
+    def set_fancy_state(self, state):
+        self._fancy_state = state

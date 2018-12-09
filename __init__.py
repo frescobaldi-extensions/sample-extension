@@ -101,6 +101,33 @@ class Extension(extensions.Extension):
         self.mainwindow().selectionStateChanged.connect(
             self.update_selection_actions)
 
+    # The following slots are triggered by settings changes, either
+    # global ones in the Preferences dialog or ones local to the extension.
+    def app_settings_changed(self):
+        """Triggered after the global settings have been changed in
+        the Preferences dialog. It should only be used to respond to
+        *global* changes, not to changes to the settings of the current
+        extension.
+        Settings *within* the extension can be handled by the slot
+        settings_changed(key, old, new), which is also triggered by
+        changing extension settings in the config widget.
+        NOTE: It may nevertheless be useful to handle extension settings
+        in the global slot when multiple changes should be handled in
+        one atomic and interdependent transaction.
+        When Preferences are applied, settings_changed() is invoked for
+        each indiviual setting (the order depends of the implementation
+        in the config widget), and after all settings have been saved
+        app_settings_changed() is also invoked."""
+        pass
+
+    def settings_changed(self, key, old, new):
+        """Triggered after a setting in the extension has been changed,
+        both in the Preference dialog or anywhere else in the extension
+        (typical case: immediately saving the state of a checkbox after
+        toggling)."""
+        if key == 'fancy':
+            self.action_collection().set_fancy_state(new)
+
     # The following methods implement the custom sample implementation
     # of the extension. In case of very large extensions it may be good
     # practice to forward these action slots to code in a separate module.
@@ -119,8 +146,8 @@ class Extension(extensions.Extension):
         informative_message = (
             _("This is a message box triggered by a sample action "
               "of the sample extension.\n\n"
-              "The FANCY option is {}checked.".format(
-              '' if self.settings().get('fancy') else 'un')))
+              "The FANCY option is {}.".format(
+                self.action_collection().fancy_state())))
         QMessageBox.information(
             self.parent().mainwindow(), message,
             informative_message, QMessageBox.Ok)
