@@ -75,7 +75,7 @@ class Extension(extensions.Extension):
     _settings_config = { 'fancy': False }
 
 
-    def __init__(self, global_extensions):
+    def __init__(self, parent, name):
         """Initialize the extension object. global_extensions
         will be referenced through self.parent()."
 
@@ -87,7 +87,7 @@ class Extension(extensions.Extension):
         class may be complete with setting the class variables.
         """
 
-        super(Extension, self).__init__(global_extensions)
+        super(Extension, self).__init__(parent, name)
 
         # The appropriate action collection is implicitly created
         ac = self.action_collection()
